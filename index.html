@@ -47,11 +47,12 @@ td{padding:3px 10px;white-space:nowrap}tbody tr{cursor:default;-webkit-touch-cal
 .ctxmenu button{display:block;width:100%;text-align:left;font:inherit;color:#111;background:none;border:0;padding:8px 16px;cursor:pointer;white-space:nowrap}.ctxmenu button:hover{background:#2a6fd0;color:#fff}
 .csvtool{display:block;margin-top:8px;font:inherit;border:1px solid #778;border-radius:5px;padding:4px 10px;cursor:pointer;color:#111;background:linear-gradient(#fff,#e3e3e3)}
 .tip{margin:6px 0 0;color:#666;font-size:11px;line-height:1.5}
-@media(max-width:760px){.window{left:16px;top:12px;width:calc(100% - 32px);height:calc(100% - 24px)}.side,.opt,.msg,.menubar b.hide{display:none}.main{flex-direction:column}.pane{width:auto;height:42%;border-left:0;border-top:1px solid #aaa}.bar input{width:100px}}
-@media(max-width:760px){.desk .di{display:none}.nowin .desk .di{display:block}.nowin .desk{overflow-y:auto}.window{left:0!important;top:0!important;width:100%!important;height:100%!important;border-radius:0}.bar{cursor:default;gap:6px;padding:6px 8px}.bar button{padding:1px 7px}#close{display:none}#deskbtn{display:inline-block}.bar input{width:120px}th:nth-child(2),td:nth-child(2){display:none}td.n{max-width:none;white-space:normal}td{padding:9px 12px;font-size:15px}.pane{height:50%}.pbody pre{font-size:13px}.menubar{font-size:14px}}
+@media(max-width:760px),(hover:none) and (pointer:coarse) and (max-width:1024px){.window{left:16px;top:12px;width:calc(100% - 32px);height:calc(100% - 24px)}.side,.opt,.msg,.menubar b.hide{display:none}.main{flex-direction:column}.pane{width:auto;height:42%;border-left:0;border-top:1px solid #aaa}.bar input{width:100px}}
+@media(max-width:760px),(hover:none) and (pointer:coarse) and (max-width:1024px){.desk .di{display:none}.nowin .desk .di{display:block}.nowin .desk{overflow-y:auto}.window{left:0!important;top:0!important;width:100%!important;height:100%!important;border-radius:0}.bar{cursor:default;gap:6px;padding:6px 8px}.bar button{padding:1px 7px}#close{display:none}#deskbtn{display:inline-block}.bar input{width:120px}th:nth-child(2),td:nth-child(2){display:none}td.n{max-width:none;white-space:normal}td{padding:9px 12px;font-size:15px}.pane{height:50%}.pbody pre{font-size:13px}.menubar{font-size:14px}.bar button,#copy,#expclose,#fig3close,#dclose,.csvtool{min-height:40px}#q,#expurl{font-size:16px}}
 .fake{flex:none;position:relative;z-index:10;background:#fff;color:#d00000;font-weight:800;font-size:clamp(15px,2.4vw,26px);line-height:1.3;text-align:center;padding:4px 10px;border-bottom:4px solid #d00000}
+.fake span{display:inline-block}
 </style></head><body>
-<div class="fake" role="note">とあるイベント向けのテストです。データはすべてAIが生成した架空のものです（実在の人物・団体とは関係ありません）。</div>
+<div class="fake" role="note"><span>とあるイベント向けのテストです。</span><wbr><span>データはすべてAIが生成した架空のものです（実在の人物・団体とは関係ありません）。</span></div>
 <div class="menubar"><b>■</b><button class="mb" id="filemenu" aria-haspopup="true">ファイル</button><b class="hide">編集</b><b class="hide">表示</b><span class="sp"></span><span class="msg">先輩が残した生データを探せ！（特定の OS・企業とは無関係の架空の画面です）</span><button class="mb" id="deskback">ファイル窓に戻る</button></div>
 <div class="menu" id="menu"><button id="export">一覧を書き出す</button></div>
 <div class="desk" id="desk">
@@ -71,7 +72,7 @@ td{padding:3px 10px;white-space:nowrap}tbody tr{cursor:default;-webkit-touch-cal
  <div class="prow"><span></span><button id="fig3close">閉じる</button></div></div></div>
 <script src="files.js"></script>
 <script>
-if(!window.FILES)throw new Error('files.js is missing: run scripts/build_site.py');
+if(!window.FILES){document.getElementById('rows').innerHTML='<tr><td colspan="4" style="padding:16px;color:#666;white-space:normal">ファイルの一覧を読み込めませんでした。通信を確かめて、ページを再読み込みしてください。</td></tr>';throw new Error('files.js is missing: run scripts/build_site.py')}
 // Build the folder tree from the manifest (p: path segments, d: date, k: kind, s: bytes, u: url, x: dobon line).
 const nodes=new Map(),top0={name:'',children:[]};
 for(const e of [...FILES].sort((a,b)=>a.p.length-b.p.length)){
@@ -93,7 +94,7 @@ const ICONS={
  slide:page('#fff4ea','#c7702a','<rect x="3" y="7" width="8" height="5" fill="none" stroke="#c7702a"/>'),
  zip:page('#f3efe6','#886','<path d="M7 5V14" stroke="#886" stroke-dasharray="1 1"/>')};
 const $=i=>document.getElementById(i);let stack=tree?[desktop,tree]:[desktop],sel=null,showTok=0;
-const phone=()=>matchMedia('(max-width:760px)').matches;
+const phone=()=>matchMedia('(max-width:760px),(hover:none) and (pointer:coarse) and (max-width:1024px)').matches;
 const isD=n=>!!n.children,ext=n=>{const m=/\.([a-z0-9]+)$/.exec(n.u||'');return m?m[1]:''};
 const size=n=>isD(n)?'--':n.size<1024?n.size+' バイト':n.size<1048576?(n.size/1024).toFixed(1)+' KB':(n.size/1048576).toFixed(1)+' MB';
 const icon=n=>isD(n)?'folder':({txt:'doc',md:'doc',csv:'sheet',xlsx:'sheet',docx:'word',pptx:'slide',pdf:'pdf',png:'img',jpg:'img',jpeg:'img',zip:'zip'}[ext(n)]||'doc');
@@ -107,7 +108,8 @@ function render(){const cur=stack[stack.length-1],raw=$('q').value.trim(),q=raw.
  for(const p of items){const n=p[p.length-1],tr=document.createElement('tr');if(n===sel)tr.className='sel';
   const nm=cell(q?`${n.name}（${p[p.length-2].name}）`:n.name,'n'),ic=el('span','ic');ic.style.backgroundImage=ICONS[icon(n)];nm.prepend(ic);
   tr.append(nm,cell(n.date,'m'),cell(size(n),'m opt'),cell(n.kind,'m opt'));
-  tr.onclick=()=>{sel=n;if(isD(n)&&(phone()||matchMedia('(hover:none)').matches))return go(p);show(n);render()};tr.ondblclick=()=>{if(isD(n))go(p)};
+  tr.onclick=()=>{sel=n;if(isD(n)&&(phone()||matchMedia('(hover:none)').matches))return go(p);if(q&&(phone()||matchMedia('(hover:none)').matches))return openSearchResult(p);show(n);render()};
+  tr.ondblclick=()=>{if(isD(n))go(p);else if(q)openSearchResult(p)};
   if(!isD(n)&&ext(n)==='csv'){tr.oncontextmenu=e=>{e.preventDefault();openCtx(e.clientX,e.clientY,n)};bindLongPress(tr,n)}
   tb.append(tr)}
  const sd=$('side');sd.textContent='';sd.append(el('h4',null,'よく使う項目'));
@@ -115,18 +117,22 @@ function render(){const cur=stack[stack.length-1],raw=$('q').value.trim(),q=raw.
  for(const [n,path] of favs){const a=el('a',cur===n?'on':'',n.name);a.onclick=()=>go(path);sd.append(a)}}
 const blank=()=>{showTok++;$('ptitle').textContent='プレビュー';const e=el('p','empty');e.innerText='ファイルを選ぶと\n中身が見えます';$('preview').replaceChildren(e,el('p','disc','特定の OS・企業とは無関係の架空の画面です'))};
 function go(p){stack=p.slice();sel=null;$('q').value='';blank();render()}
+// Opening a search result (file only; search never matches folder names) goes
+// to the folder that holds it, with that file selected and previewed.
+function openSearchResult(p){const n=p[p.length-1];stack=p.slice(0,-1);$('q').value='';sel=n;show(n);render()}
 function link(text,url,cls,o={}){const a=el('a',cls,text);a.href=url;if(o.download)a.download=o.download;else{a.target='_blank';a.rel='noopener'}return a}
+const FETCH_FAIL='先輩: ファイルを読み込めなかった。通信が切れたかも。もう一度押してみて。';
 function show(n){const v=$('preview'),tok=++showTok;v.textContent='';$('ptitle').textContent=n.name;
  v.append(el('div','meta',n.kind+' ・ '+n.date+(isD(n)?'':' ・ '+size(n))));
  if(isD(n)){v.append(el('p','empty',n.children.length+' 項目'));return}
  const x=ext(n);
+ if(x==='csv'){const b=el('button','csvtool','図3に入れて描く（先輩の作図ツール）');b.onclick=()=>runFig3(n);
+  v.append(b,el('p','tip','CSVの行を右クリック（PC）か長押し（スマホ）しても同じことができます。指紋が 論文用/図3_スクショ.png の窓の下の数字と同じか見比べてください。'))}
  if(['txt','md','csv','py'].includes(x)){const pre=el('pre',null,'読み込み中…');v.append(pre);
   fetch(n.u).then(r=>{if(!r.ok)throw new Error(r.status);return r.text()}).then(t=>{if(tok!==showTok)return;
    if(x==='csv'){const lines=t.replace(/\r?\n$/,'').split(/\r?\n/);if(lines.length>60){pre.textContent=lines.slice(0,60).join('\n');
     v.append(el('p','more',`ここまで60行です。この先も ${lines.length-60} 行続きます。`),link('ファイル全体を開く',n.u,'act'));return}}
-   pre.textContent=t||'（空のファイルです）'}).catch(err=>{if(tok===showTok)pre.textContent='（読み込めませんでした: '+err.message+'）'})
-  if(x==='csv'){const b=el('button','csvtool','図3に入れて描く（先輩の作図ツール）');b.onclick=()=>runFig3(n);
-   v.append(b,el('p','tip','CSVの行を右クリック（スマホは長押し）しても同じことができます。指紋が 論文用/図3_スクショ.png の窓の下の数字と同じか見比べてください。'))}}
+   pre.textContent=t||'（空のファイルです）'}).catch(err=>{if(tok===showTok)pre.textContent=FETCH_FAIL})}
  else if(['png','jpg','jpeg'].includes(x)){const a=link('',n.u),img=el('img');img.src=n.u;img.alt=n.name;a.append(img);v.append(a,el('p','more','画像を押すと大きく開きます。'))}
  else if(x==='pdf')v.append(link('PDF を開く',n.u,'act'));
  else v.append(el('p','more',`${n.kind}ファイルのためプレビューできません。`),link('ダウンロード',n.u,'act',{download:n.name}));
@@ -152,12 +158,14 @@ $('bar').onpointermove=e=>{if(!drag)return;const o=$('desk').getBoundingClientRe
 $('bar').onpointerup=$('bar').onpointercancel=()=>{drag=null};
 $('close').onclick=$('deskbtn').onclick=()=>setWin(false);$('deskback').onclick=()=>{setWin(true);layout()};
 $('back').onclick=()=>go(stack.slice(0,-1));$('q').oninput=render;$('dclose').onclick=()=>$('dobon').classList.remove('on');
+$('dobon').onclick=e=>{if(e.target===e.currentTarget&&e.detail<2)$('dobon').classList.remove('on')};
 // File menu: "export list" shows the absolute URL of the static list page.
 const menu=$('menu'),fm=$('filemenu');
 fm.onclick=e=>{e.stopPropagation();const r=fm.getBoundingClientRect();menu.style.left=r.left+'px';menu.style.top=r.bottom+'px';fm.classList.toggle('on',menu.classList.toggle('on'))};
 document.addEventListener('click',()=>{menu.classList.remove('on');fm.classList.remove('on');closeCtx()});
 $('export').onclick=()=>{const u=new URL('list.html',location.href).href;$('expurl').value=u;$('explink').href=u;$('cstat').textContent='';$('exp').classList.add('on')};
 $('expclose').onclick=()=>$('exp').classList.remove('on');
+$('exp').onclick=e=>{if(e.target===e.currentTarget&&e.detail<2)$('exp').classList.remove('on')};
 $('copy').onclick=()=>{const i=$('expurl'),u=i.value,fallback=()=>{i.focus();i.select();i.setSelectionRange(0,u.length);let ok=false;try{ok=document.execCommand('copy')}catch(e){}
   $('cstat').textContent=ok?'コピーしました':'選択しました。コピーしてください'};
  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(u).then(()=>{$('cstat').textContent='コピーしました'},fallback);else fallback()};
@@ -167,7 +175,8 @@ $('copy').onclick=()=>{const i=$('expurl'),u=i.value,fallback=()=>{i.focus();i.s
 // scripts/make_assets.py (fig3_table/fingerprint_of) and 論文用/make_fig3.py.
 // No network beyond this site's own files, no localStorage, no external libs.
 let ctxNode=null,swallowClick=false;
-function openCtx(x,y,n,offsetY=0){ctxNode=n;const m=$('csvctx');m.style.left=Math.min(x,innerWidth-230)+'px';m.style.top=Math.min(y+offsetY,innerHeight-50)+'px';m.classList.add('on')}
+function openCtx(x,y,n,offsetY=0){ctxNode=n;const m=$('csvctx');m.classList.add('on');const mg=8;
+ m.style.left=Math.min(x,innerWidth-m.offsetWidth-mg)+'px';m.style.top=Math.min(y+offsetY,innerHeight-m.offsetHeight-mg)+'px'}
 function closeCtx(){$('csvctx').classList.remove('on')}
 // A long-press's finger-lift can fire a trailing click on some browsers;
 // swallow exactly that one click (capture phase, before tr/d's own onclick)
@@ -179,7 +188,7 @@ function closeCtx(){$('csvctx').classList.remove('on')}
 document.addEventListener('pointerdown',()=>{swallowClick=false},true);
 document.addEventListener('click',e=>{if(swallowClick){swallowClick=false;e.stopPropagation()}},true);
 addEventListener('scroll',()=>closeCtx(),true);
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCtx()});
+document.addEventListener('keydown',e=>{if(e.isComposing)return;if(e.key!=='Escape')return;closeCtx();menu.classList.remove('on');fm.classList.remove('on');$('exp').classList.remove('on');$('dobon').classList.remove('on');$('fig3').classList.remove('on')});
 function bindLongPress(elm,n){let t=null,sx=0,sy=0;
  const cancel=()=>{if(t){clearTimeout(t);t=null}};
  elm.addEventListener('pointerdown',e=>{if(e.pointerType!=='touch'||!e.isPrimary)return;cancel();const x=e.clientX,y=e.clientY;sx=x;sy=y;
@@ -189,7 +198,7 @@ function bindLongPress(elm,n){let t=null,sx=0,sy=0;
  elm.addEventListener('pointercancel',cancel)}
 $('csvctxrun').onclick=e=>{e.stopPropagation();$('csvctx').classList.remove('on');if(ctxNode)runFig3(ctxNode)};
 $('fig3close').onclick=()=>$('fig3').classList.remove('on');
-$('fig3').onclick=e=>{if(e.target===e.currentTarget)$('fig3').classList.remove('on')};
+$('fig3').onclick=e=>{if(e.target===e.currentTarget&&e.detail<2)$('fig3').classList.remove('on')};
 function fig3SetBody(...kids){$('fig3body').replaceChildren(...kids)}
 
 // Pure-JS SHA-256 (no deps), used only when crypto.subtle is unavailable
@@ -290,11 +299,12 @@ async function runFig3(n){
   const rep2=nodes.get('デスクトップ/先輩のフォルダ/論文用/図3_input/DATA0110.CSV');
   const rough=nodes.get('デスクトップ/図3_荒いと言われたもの.png');
   if(!rep1||!rep2)throw new Error('先輩: 論文用/図3_input が見当たらない…先輩のフォルダ、動かしてない？');
-  const bufs=await Promise.all([rep1,rep2,n].map(x=>fetch(x.u).then(r=>{if(!r.ok)throw new Error('取得できませんでした');return r.arrayBuffer()})));
+  const bufs=await Promise.all([rep1,rep2,n].map(x=>fetch(x.u).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).catch(()=>{throw new Error(FETCH_FAIL)})));
   if(tok!==fig3Tok)return;
+  if(bufs[2].byteLength===0)throw new Error('先輩: そのファイル、空っぽだよ。');
   const texts=bufs.map(b=>new TextDecoder('ascii').decode(b));
   for(const t of texts)if(!t.startsWith('Luminescence Monitor YH-8,'))
-   throw new Error('先輩: それ、装置のCSVじゃない気がする…発光測定のフォルダから選んでみて。');
+   throw new Error('先輩: それ、装置のCSVじゃない気がする…装置が書き出した DATA で始まるファイルを選んでみて。');
   const rowsList=texts.map(parseInstrumentRows);
   if(rowsList.some(r=>r.length<2))throw new Error('先輩: データ行がうまく読めなかった。CSVが壊れてない？');
   const table=fig3Table(rowsList),fp=await fingerprintOf(bufs.map(b=>new Uint8Array(b)));
