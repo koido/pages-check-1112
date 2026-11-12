@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,">
 <title>先輩のフォルダ</title>
 <style>
 *{box-sizing:border-box}html,body{height:100%;margin:0}
@@ -9,7 +9,7 @@ body{background:linear-gradient(160deg,#1f5f9e,#3f8fc4 55%,#17457c);font:13px sy
 #deskback{display:none;border:1px solid #778;margin:0;padding:1px 10px;background:linear-gradient(#fff,#e3e3e3)}.nowin #deskback{display:inline-block}
 .menu{position:fixed;z-index:8;display:none;background:#f7f7f7;border:1px solid #999;border-radius:0 0 6px 6px;box-shadow:0 6px 18px #0006;padding:4px 0;min-width:180px}.menu.on{display:block}
 .menu button{display:block;width:100%;text-align:left;font:inherit;color:#111;background:none;border:0;padding:6px 16px;cursor:pointer}.menu button:hover{background:#2a6fd0;color:#fff}
-.panel{position:fixed;inset:0;display:none;justify-content:center;align-items:flex-start;z-index:9;padding:62px 16px 16px;background:#0004}.panel.on{display:flex}
+.panel{position:fixed;inset:0;display:none;justify-content:center;align-items:flex-start;z-index:9;padding:calc(var(--fh,0px) + 62px) 16px 16px;background:#0004}.panel.on{display:flex}
 .panel>div{background:#f5f5f5;border-radius:0 0 10px 10px;box-shadow:0 10px 30px #0008;padding:16px 18px;width:min(520px,100%);animation:drop .25s ease-out}
 .panel strong{display:block;font-size:15px}.panel p{margin:8px 0;line-height:1.6}.urlrow{display:flex;gap:8px}.urlrow input{flex:1;min-width:0;font:12px ui-monospace,Consolas,monospace;border:1px solid #999;border-radius:5px;padding:4px 8px;background:#fff}
 .panel button{font:inherit;border:1px solid #778;border-radius:5px;padding:2px 12px;cursor:pointer;color:#111;background:linear-gradient(#fff,#e3e3e3)}.prow{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px}#cstat{color:#2a6a2a;font-size:12px}
@@ -36,10 +36,10 @@ td{padding:3px 10px;white-space:nowrap}tbody tr{cursor:default;-webkit-touch-cal
 .pbody pre{white-space:pre-wrap;word-break:break-word;margin:0;background:#fff;border:1px solid #bbb;padding:10px;font:12px/1.55 ui-monospace,Consolas,"Hiragino Kaku Gothic ProN",monospace}.empty{text-align:center;margin-top:50px;color:#666}
 .pbody img{display:block;max-width:100%;max-height:60vh;margin:0 auto;border:1px solid #bbb;background:#fff;cursor:zoom-in}.pbody .more{margin:8px 0 0;color:#555;font-size:12px}.pbody a.act{display:inline-block;margin-top:8px}.disc{color:#777;font-size:11px;text-align:center;margin-top:24px}
 .path{padding:3px 12px;font-size:12px;color:#444;background:#e6e6e6;border-top:1px solid #aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dobon{position:fixed;inset:0;display:none;justify-content:center;align-items:flex-start;z-index:9;padding:62px 16px 16px;background:#0004}.dobon.on{display:flex}
+.dobon{position:fixed;inset:0;display:none;justify-content:center;align-items:flex-start;z-index:9;padding:calc(var(--fh,0px) + 62px) 16px 16px;background:#0004}.dobon.on{display:flex}
 .dobon>div{background:#f5f5f5;border-radius:0 0 10px 10px;box-shadow:0 10px 30px #0008;padding:18px 20px;max-width:460px;display:flex;gap:16px;flex-wrap:wrap;animation:drop .25s ease-out}@keyframes drop{from{transform:translateY(-100%)}}
 .dobon svg{flex:none}.dtext{flex:1;min-width:200px}.dobon strong{display:block;font-size:15px}.dobon p{margin:8px 0 0;line-height:1.6}.dbtn{width:100%;text-align:right}
-#fig3>div{width:min(760px,96%);max-height:calc(100vh - 78px);max-height:calc(100dvh - 78px);display:flex;flex-direction:column}
+#fig3>div{width:min(760px,96%);max-height:calc(100vh - 78px - var(--fh,0px));max-height:calc(100dvh - 78px - var(--fh,0px));display:flex;flex-direction:column}
 #fig3body{overflow:auto;min-height:0}
 .fig3cols{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
 .fig3cols>div{flex:1;min-width:220px}.fig3cols canvas,.fig3cols img{max-width:100%;border:1px solid #bbb;background:#fff;display:block}
@@ -49,7 +49,9 @@ td{padding:3px 10px;white-space:nowrap}tbody tr{cursor:default;-webkit-touch-cal
 .tip{margin:6px 0 0;color:#666;font-size:11px;line-height:1.5}
 @media(max-width:760px){.window{left:16px;top:12px;width:calc(100% - 32px);height:calc(100% - 24px)}.side,.opt,.msg,.menubar b.hide{display:none}.main{flex-direction:column}.pane{width:auto;height:42%;border-left:0;border-top:1px solid #aaa}.bar input{width:100px}}
 @media(max-width:760px){.desk .di{display:none}.nowin .desk .di{display:block}.nowin .desk{overflow-y:auto}.window{left:0!important;top:0!important;width:100%!important;height:100%!important;border-radius:0}.bar{cursor:default;gap:6px;padding:6px 8px}.bar button{padding:1px 7px}#close{display:none}#deskbtn{display:inline-block}.bar input{width:120px}th:nth-child(2),td:nth-child(2){display:none}td.n{max-width:none;white-space:normal}td{padding:9px 12px;font-size:15px}.pane{height:50%}.pbody pre{font-size:13px}.menubar{font-size:14px}}
+.fake{flex:none;position:relative;z-index:10;background:#fff;color:#d00000;font-weight:800;font-size:clamp(15px,2.4vw,26px);line-height:1.3;text-align:center;padding:4px 10px;border-bottom:4px solid #d00000}
 </style></head><body>
+<div class="fake" role="note">とあるイベント向けのテストです。データはすべてAIが生成した架空のものです（実在の人物・団体とは関係ありません）。</div>
 <div class="menubar"><b>■</b><button class="mb" id="filemenu" aria-haspopup="true">ファイル</button><b class="hide">編集</b><b class="hide">表示</b><span class="sp"></span><span class="msg">先輩が残した生データを探せ！（特定の OS・企業とは無関係の架空の画面です）</span><button class="mb" id="deskback">ファイル窓に戻る</button></div>
 <div class="menu" id="menu"><button id="export">一覧を書き出す</button></div>
 <div class="desk" id="desk">
@@ -310,4 +312,5 @@ async function runFig3(n){
  }catch(err){if(tok===fig3Tok)fig3SetBody(el('p','fig3note',(err&&err.message)||String(err)))}}
 
 blank();render();
+const setFh=()=>document.documentElement.style.setProperty('--fh',document.querySelector('.fake').offsetHeight+'px');setFh();addEventListener('resize',setFh);
 </script></body></html>
