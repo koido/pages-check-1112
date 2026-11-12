@@ -1,0 +1,14 @@
+Luminescence Monitor YH-8,Firmware 2.13
+Unit,1
+Record No.,001408
+File,DATA0036.CSV
+Start,2023/12/21 05:31:02
+Interval (min),10
+Integration (s),60
+Set Temp (C),37.0
+Channels,8
+Comment,K10 VS DMSO
+
+Elapsed (h),Temp (C),CH1,CH2,CH3,CH4,CH5,CH6,CH7,CH8
+0.00,36.8,98412,97730,99105,98840,97956,98233,99410,98015
+End,2023/12/21 05:33:40,Stopped (lid open)

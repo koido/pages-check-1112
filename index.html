@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>先輩のフォルダ</title>
+<style>
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:linear-gradient(160deg,#1f5f9e,#3f8fc4 55%,#17457c);font:13px system-ui,"Hiragino Kaku Gothic ProN","Yu Gothic UI",sans-serif;color:#111;display:flex;flex-direction:column;overflow:hidden}
+.menubar{background:#f3f3f3;border-bottom:1px solid #999;display:flex;align-items:center;gap:18px;padding:3px 14px;white-space:nowrap;overflow:hidden;position:relative;z-index:5}.menubar b{font-weight:500}.menubar .sp{flex:1}.menubar .msg{color:#333;overflow:hidden;text-overflow:ellipsis}
+.mb{font:inherit;font-weight:500;color:#111;background:none;border:0;padding:0 6px;margin:0 -6px;border-radius:4px;cursor:pointer}.mb.on{background:#2a6fd0;color:#fff}
+#deskback{display:none;border:1px solid #778;margin:0;padding:1px 10px;background:linear-gradient(#fff,#e3e3e3)}.nowin #deskback{display:inline-block}
+.menu{position:fixed;z-index:8;display:none;background:#f7f7f7;border:1px solid #999;border-radius:0 0 6px 6px;box-shadow:0 6px 18px #0006;padding:4px 0;min-width:180px}.menu.on{display:block}
+.menu button{display:block;width:100%;text-align:left;font:inherit;color:#111;background:none;border:0;padding:6px 16px;cursor:pointer}.menu button:hover{background:#2a6fd0;color:#fff}
+.panel{position:fixed;inset:0;display:none;justify-content:center;align-items:flex-start;z-index:9;padding:62px 16px 16px;background:#0004}.panel.on{display:flex}
+.panel>div{background:#f5f5f5;border-radius:0 0 10px 10px;box-shadow:0 10px 30px #0008;padding:16px 18px;width:min(520px,100%);animation:drop .25s ease-out}
+.panel strong{display:block;font-size:15px}.panel p{margin:8px 0;line-height:1.6}.urlrow{display:flex;gap:8px}.urlrow input{flex:1;min-width:0;font:12px ui-monospace,Consolas,monospace;border:1px solid #999;border-radius:5px;padding:4px 8px;background:#fff}
+.panel button{font:inherit;border:1px solid #778;border-radius:5px;padding:2px 12px;cursor:pointer;color:#111;background:linear-gradient(#fff,#e3e3e3)}.prow{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px}#cstat{color:#2a6a2a;font-size:12px}
+.desk{flex:1;min-height:0;position:relative;overflow:hidden}
+.di{position:absolute;width:80px;text-align:center;color:#fff;cursor:default;user-select:none;padding:2px}
+.di .big{display:block;width:44px;height:44px;margin:0 auto 2px;background:center/contain no-repeat}
+.di span.l{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:11px;line-height:1.25;text-shadow:0 1px 2px #000;word-break:break-all}
+.di.on span.l{background:#1d5fbf;border-radius:3px;text-shadow:none}.di.on .big{filter:brightness(.7)}
+.window{position:absolute;left:11%;top:7%;width:min(960px,78%);height:74%;display:flex;flex-direction:column;border-radius:7px;overflow:hidden;box-shadow:0 12px 34px #0009,0 0 0 1px #0005;background:#fff;z-index:2}.nowin .window{display:none}
+.bar{display:flex;align-items:center;gap:10px;padding:6px 10px;background:linear-gradient(#ededed,#d6d6d6);border-bottom:1px solid #999;touch-action:none;cursor:move}
+.bar button,.dobon button{font:inherit;border:1px solid #778;border-radius:5px;padding:1px 10px;cursor:pointer;color:#111;background:linear-gradient(#fff,#e3e3e3)}.bar button:disabled{color:#999;cursor:default}#deskbtn{display:none}
+.title{flex:1;text-align:center;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar input{width:170px;min-width:0;font:inherit;border:1px solid #999;border-radius:5px;padding:1px 8px;background:#fff}
+.main{flex:1;display:flex;min-height:0}
+.side{width:165px;flex:none;background:#e6e9ee;border-right:1px solid #aaa;padding:8px 0;overflow:auto}
+.side h4{margin:4px 12px;font-size:11px;color:#5a6a80;font-weight:700}
+.side a{display:block;padding:3px 12px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.side a.on{background:#2a6fd0;color:#fff;font-weight:600}
+.list{flex:1;min-width:0;overflow:auto}table{width:100%;border-collapse:collapse}
+th{position:sticky;top:0;text-align:left;font-weight:500;font-size:12px;padding:3px 10px;white-space:nowrap;border-bottom:1px solid #999;background:#f0f0f0}
+td{padding:3px 10px;white-space:nowrap}tbody tr{cursor:default;-webkit-touch-callout:none;user-select:none}tbody tr:nth-child(even){background:#f2f5f9}tr.sel,tr.sel:nth-child(even){background:#2a6fd0;color:#fff}td.m{color:#555}tr.sel td.m{color:#e4efff}td.n{max-width:300px;overflow:hidden;text-overflow:ellipsis}
+.ic{display:inline-block;width:18px;height:16px;margin-right:6px;vertical-align:-3px;background:center/contain no-repeat}
+.pane{width:300px;flex:none;border-left:1px solid #aaa;display:flex;flex-direction:column;min-height:0;background:#fafafa}
+.pane h3{margin:0;padding:10px 12px 0;font-size:14px;word-break:break-all}.pbody{flex:1;overflow:auto;padding:6px 12px 12px;min-height:0}.meta{color:#666;font-size:12px;margin-bottom:8px}
+.pbody pre{white-space:pre-wrap;word-break:break-word;margin:0;background:#fff;border:1px solid #bbb;padding:10px;font:12px/1.55 ui-monospace,Consolas,"Hiragino Kaku Gothic ProN",monospace}.empty{text-align:center;margin-top:50px;color:#666}
+.pbody img{display:block;max-width:100%;max-height:60vh;margin:0 auto;border:1px solid #bbb;background:#fff;cursor:zoom-in}.pbody .more{margin:8px 0 0;color:#555;font-size:12px}.pbody a.act{display:inline-block;margin-top:8px}.disc{color:#777;font-size:11px;text-align:center;margin-top:24px}
+.path{padding:3px 12px;font-size:12px;color:#444;background:#e6e6e6;border-top:1px solid #aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dobon{position:fixed;inset:0;display:none;justify-content:center;align-items:flex-start;z-index:9;padding:62px 16px 16px;background:#0004}.dobon.on{display:flex}
+.dobon>div{background:#f5f5f5;border-radius:0 0 10px 10px;box-shadow:0 10px 30px #0008;padding:18px 20px;max-width:460px;display:flex;gap:16px;flex-wrap:wrap;animation:drop .25s ease-out}@keyframes drop{from{transform:translateY(-100%)}}
+.dobon svg{flex:none}.dtext{flex:1;min-width:200px}.dobon strong{display:block;font-size:15px}.dobon p{margin:8px 0 0;line-height:1.6}.dbtn{width:100%;text-align:right}
+#fig3>div{width:min(760px,96%);max-height:calc(100vh - 78px);max-height:calc(100dvh - 78px);display:flex;flex-direction:column}
+#fig3body{overflow:auto;min-height:0}
+.fig3cols{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
+.fig3cols>div{flex:1;min-width:220px}.fig3cols canvas,.fig3cols img{max-width:100%;border:1px solid #bbb;background:#fff;display:block}
+.fig3cols h4{margin:0 0 4px;font-size:12px;color:#555;font-weight:500}.fig3note{margin:10px 0 0;font-size:12px;color:#444;line-height:1.6}
+.ctxmenu button{display:block;width:100%;text-align:left;font:inherit;color:#111;background:none;border:0;padding:8px 16px;cursor:pointer;white-space:nowrap}.ctxmenu button:hover{background:#2a6fd0;color:#fff}
+.csvtool{display:block;margin-top:8px;font:inherit;border:1px solid #778;border-radius:5px;padding:4px 10px;cursor:pointer;color:#111;background:linear-gradient(#fff,#e3e3e3)}
+.tip{margin:6px 0 0;color:#666;font-size:11px;line-height:1.5}
+@media(max-width:760px){.window{left:16px;top:12px;width:calc(100% - 32px);height:calc(100% - 24px)}.side,.opt,.msg,.menubar b.hide{display:none}.main{flex-direction:column}.pane{width:auto;height:42%;border-left:0;border-top:1px solid #aaa}.bar input{width:100px}}
+@media(max-width:760px){.desk .di{display:none}.nowin .desk .di{display:block}.nowin .desk{overflow-y:auto}.window{left:0!important;top:0!important;width:100%!important;height:100%!important;border-radius:0}.bar{cursor:default;gap:6px;padding:6px 8px}.bar button{padding:1px 7px}#close{display:none}#deskbtn{display:inline-block}.bar input{width:120px}th:nth-child(2),td:nth-child(2){display:none}td.n{max-width:none;white-space:normal}td{padding:9px 12px;font-size:15px}.pane{height:50%}.pbody pre{font-size:13px}.menubar{font-size:14px}}
+</style></head><body>
+<div class="menubar"><b>■</b><button class="mb" id="filemenu" aria-haspopup="true">ファイル</button><b class="hide">編集</b><b class="hide">表示</b><span class="sp"></span><span class="msg">先輩が残した生データを探せ！（特定の OS・企業とは無関係の架空の画面です）</span><button class="mb" id="deskback">ファイル窓に戻る</button></div>
+<div class="menu" id="menu"><button id="export">一覧を書き出す</button></div>
+<div class="desk" id="desk">
+<div class="window" id="win">
+ <div class="bar" id="bar"><button id="close" aria-label="閉じる">×</button><button id="back">‹ 戻る</button><span class="title" id="title"></span><input id="q" placeholder="ファイル名で絞り込み" aria-label="ファイル名で絞り込み"><button id="deskbtn">デスクトップ</button></div>
+ <div class="main"><nav class="side" id="side"></nav>
+  <div class="list"><table><thead><tr><th>名前</th><th>変更日</th><th class="opt">サイズ</th><th class="opt">種類</th></tr></thead><tbody id="rows"></tbody></table></div>
+  <aside class="pane"><h3 id="ptitle">プレビュー</h3><div class="pbody" id="preview"></div></aside></div>
+ <div class="path" id="path"></div>
+</div></div>
+<div class="panel" id="exp"><div><strong>一覧を書き出しました</strong><p>デスクトップ以下の全ファイルを、リンク付きの一覧にしました。一覧の場所（URL）:</p>
+ <div class="urlrow"><input id="expurl" readonly aria-label="一覧の URL"><button id="copy">コピー</button></div>
+ <div class="prow"><a id="explink" target="_blank" rel="noopener">一覧を開く</a><span id="cstat"></span><button id="expclose">閉じる</button></div></div></div>
+<div class="dobon" id="dobon"><div><svg width="44" height="48" viewBox="0 0 44 48" aria-hidden="true"><circle cx="20" cy="30" r="16" fill="#222"/><circle cx="14" cy="24" r="3" fill="#777"/><rect x="24" y="10" width="8" height="8" transform="rotate(35 28 14)" fill="#444"/><path d="M31 9Q34 3 39 5" fill="none" stroke="#864" stroke-width="2"/><path d="M39 1l1 3 3 1-3 1-1 3-1-3-3-1 3-1z" fill="#e8590c"/></svg><div class="dtext"><strong>ドボン！ 見つけてはいけないものを見つけました。</strong><p id="dmsg"></p></div><div class="dbtn"><button id="dclose">そっと閉じる</button></div></div></div>
+<div class="menu ctxmenu" id="csvctx"><button id="csvctxrun">図3に入れて描く（先輩の作図ツール）</button></div>
+<div class="panel" id="fig3"><div><strong id="fig3title">先輩の作図ツール</strong><div id="fig3body"></div>
+ <div class="prow"><span></span><button id="fig3close">閉じる</button></div></div></div>
+<script src="files.js"></script>
+<script>
+if(!window.FILES)throw new Error('files.js is missing: run scripts/build_site.py');
+// Build the folder tree from the manifest (p: path segments, d: date, k: kind, s: bytes, u: url, x: dobon line).
+const nodes=new Map(),top0={name:'',children:[]};
+for(const e of [...FILES].sort((a,b)=>a.p.length-b.p.length)){
+ const n={name:e.p[e.p.length-1],date:e.d,kind:e.k};if(e.k==='フォルダ')n.children=[];else{n.size=e.s;n.u=e.u;n.x=e.x}
+ (e.p.length>1?nodes.get(e.p.slice(0,-1).join('/')):top0).children.push(n);nodes.set(e.p.join('/'),n)}
+const desktop=nodes.get('デスクトップ'),tree=nodes.get('デスクトップ/先輩のフォルダ');
+// Seeded so every participant sees the same mess.
+let seed=46;const rnd=()=>(seed=(seed*1664525+1013904223)>>>0)/4294967296;const ri=(a,b)=>a+Math.floor(rnd()*(b-a+1));
+const svg=b=>`url("data:image/svg+xml,${encodeURIComponent(b)}")`;
+const S=(w,inner)=>svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} 16">${inner}</svg>`);
+const page=(f,s,x='')=>S(14,`<path d="M1.5.5H9L12.5 4V15.5H1.5Z" fill="${f}" stroke="${s}"/><path d="M9 .5V4H12.5" fill="#ddd" stroke="${s}"/>${x}`);
+const ICONS={
+ folder:S(18,'<path d="M1 4Q1 2 3 2H7L9 4H15Q17 4 17 6V13Q17 15 15 15H3Q1 15 1 13Z" fill="#f2c75c" stroke="#b08a2a"/><path d="M2 6H16" stroke="#fff" stroke-opacity=".6"/>'),
+ doc:page('#fff','#888','<path d="M4 7H10M4 9H10M4 11H10" stroke="#9ab"/>'),
+ word:page('#eef3fc','#3f6fb5','<path d="M4 7H10M4 9H10M4 11H8" stroke="#3f6fb5"/>'),
+ sheet:page('#effaef','#4a9a4a','<path d="M3 7H11M3 10H11M3 13H11M7 6V14" stroke="#4a9a4a"/>'),
+ img:page('#eef7ff','#678','<path d="M3 13L6 9L8 11L10 8L11 13Z" fill="#6a9"/><circle cx="5" cy="7" r="1" fill="#e9a"/>'),
+ pdf:page('#fff','#b33','<rect x="3" y="8" width="8" height="4" fill="#c33"/>'),
+ slide:page('#fff4ea','#c7702a','<rect x="3" y="7" width="8" height="5" fill="none" stroke="#c7702a"/>'),
+ zip:page('#f3efe6','#886','<path d="M7 5V14" stroke="#886" stroke-dasharray="1 1"/>')};
+const $=i=>document.getElementById(i);let stack=tree?[desktop,tree]:[desktop],sel=null,showTok=0;
+const phone=()=>matchMedia('(max-width:760px)').matches;
+const isD=n=>!!n.children,ext=n=>{const m=/\.([a-z0-9]+)$/.exec(n.u||'');return m?m[1]:''};
+const size=n=>isD(n)?'--':n.size<1024?n.size+' バイト':n.size<1048576?(n.size/1024).toFixed(1)+' KB':(n.size/1048576).toFixed(1)+' MB';
+const icon=n=>isD(n)?'folder':({txt:'doc',md:'doc',csv:'sheet',xlsx:'sheet',docx:'word',pptx:'slide',pdf:'pdf',png:'img',jpg:'img',jpeg:'img',zip:'zip'}[ext(n)]||'doc');
+const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e};
+const cell=(t,c)=>el('td',c,t);
+function walk(n,base,out){for(const c of n.children){const p=[...base,c];if(isD(c))walk(c,p,out);else out.push(p)}return out}
+function render(){const cur=stack[stack.length-1],raw=$('q').value.trim(),q=raw.toLowerCase();
+ $('title').textContent=q?`「${raw}」の検索結果`:cur.name;$('back').disabled=stack.length<2;$('path').textContent=stack.map(n=>n.name).join(' › ');
+ const items=q?walk(desktop,[desktop],[]).filter(p=>p[p.length-1].name.toLowerCase().includes(q)):cur.children.map(c=>[...stack,c]);
+ const tb=$('rows');tb.textContent='';
+ for(const p of items){const n=p[p.length-1],tr=document.createElement('tr');if(n===sel)tr.className='sel';
+  const nm=cell(q?`${n.name}（${p[p.length-2].name}）`:n.name,'n'),ic=el('span','ic');ic.style.backgroundImage=ICONS[icon(n)];nm.prepend(ic);
+  tr.append(nm,cell(n.date,'m'),cell(size(n),'m opt'),cell(n.kind,'m opt'));
+  tr.onclick=()=>{sel=n;if(isD(n)&&(phone()||matchMedia('(hover:none)').matches))return go(p);show(n);render()};tr.ondblclick=()=>{if(isD(n))go(p)};
+  if(!isD(n)&&ext(n)==='csv'){tr.oncontextmenu=e=>{e.preventDefault();openCtx(e.clientX,e.clientY,n)};bindLongPress(tr,n)}
+  tb.append(tr)}
+ const sd=$('side');sd.textContent='';sd.append(el('h4',null,'よく使う項目'));
+ const favs=[[desktop,[desktop]]];if(tree)favs.push([tree,[desktop,tree]],...tree.children.filter(isD).map(c=>[c,[desktop,tree,c]]));
+ for(const [n,path] of favs){const a=el('a',cur===n?'on':'',n.name);a.onclick=()=>go(path);sd.append(a)}}
+const blank=()=>{showTok++;$('ptitle').textContent='プレビュー';const e=el('p','empty');e.innerText='ファイルを選ぶと\n中身が見えます';$('preview').replaceChildren(e,el('p','disc','特定の OS・企業とは無関係の架空の画面です'))};
+function go(p){stack=p.slice();sel=null;$('q').value='';blank();render()}
+function link(text,url,cls,o={}){const a=el('a',cls,text);a.href=url;if(o.download)a.download=o.download;else{a.target='_blank';a.rel='noopener'}return a}
+function show(n){const v=$('preview'),tok=++showTok;v.textContent='';$('ptitle').textContent=n.name;
+ v.append(el('div','meta',n.kind+' ・ '+n.date+(isD(n)?'':' ・ '+size(n))));
+ if(isD(n)){v.append(el('p','empty',n.children.length+' 項目'));return}
+ const x=ext(n);
+ if(['txt','md','csv','py'].includes(x)){const pre=el('pre',null,'読み込み中…');v.append(pre);
+  fetch(n.u).then(r=>{if(!r.ok)throw new Error(r.status);return r.text()}).then(t=>{if(tok!==showTok)return;
+   if(x==='csv'){const lines=t.replace(/\r?\n$/,'').split(/\r?\n/);if(lines.length>60){pre.textContent=lines.slice(0,60).join('\n');
+    v.append(el('p','more',`ここまで60行です。この先も ${lines.length-60} 行続きます。`),link('ファイル全体を開く',n.u,'act'));return}}
+   pre.textContent=t||'（空のファイルです）'}).catch(err=>{if(tok===showTok)pre.textContent='（読み込めませんでした: '+err.message+'）'})
+  if(x==='csv'){const b=el('button','csvtool','図3に入れて描く（先輩の作図ツール）');b.onclick=()=>runFig3(n);
+   v.append(b,el('p','tip','CSVの行を右クリック（スマホは長押し）しても同じことができます。指紋が 論文用/図3_スクショ.png の窓の下の数字と同じか見比べてください。'))}}
+ else if(['png','jpg','jpeg'].includes(x)){const a=link('',n.u),img=el('img');img.src=n.u;img.alt=n.name;a.append(img);v.append(a,el('p','more','画像を押すと大きく開きます。'))}
+ else if(x==='pdf')v.append(link('PDF を開く',n.u,'act'));
+ else v.append(el('p','more',`${n.kind}ファイルのためプレビューできません。`),link('ダウンロード',n.u,'act',{download:n.name}));
+ if(n.x){$('dmsg').innerText=n.x;$('dobon').classList.add('on')}}
+const setWin=on=>document.body.classList.toggle('nowin',!on);
+function openIcon(n){setWin(true);if(isD(n))go([desktop,n]);else{go([desktop]);sel=n;show(n);render()}}
+// Scatter icons over shuffled grid cells, with jitter so they overlap untidily.
+const icons=desktop.children.map(n=>{const d=el('div','di'),b=el('span','big'),l=el('span','l',n.name);b.style.backgroundImage=ICONS[icon(n)];d.append(b,l);
+ d.onclick=()=>{document.querySelectorAll('.di.on').forEach(x=>x.classList.remove('on'));d.classList.add('on');if(phone()||matchMedia('(hover:none)').matches)openIcon(n)};d.ondblclick=()=>openIcon(n);
+ if(!isD(n)&&ext(n)==='csv'){d.oncontextmenu=e=>{e.preventDefault();openCtx(e.clientX,e.clientY,n)};bindLongPress(d,n)}
+ $('desk').prepend(d);return d});
+// On phones the screen has fewer cells than icons, so add rows and let the desktop scroll instead of stacking icons.
+function layout(){const w=$('desk').clientWidth;let px=76,py=84,cols=Math.max(1,Math.floor(w/px)),rows=Math.max(1,Math.floor($('desk').clientHeight/py),phone()?Math.ceil(icons.length/cols):0);
+ // On wider screens, shrink the grid pitch until every icon has its own cell, so none is fully hidden under another.
+ while(cols*rows<icons.length){px*=.95;py*=.95;cols=Math.max(1,Math.floor(w/px));rows=Math.max(1,Math.floor($('desk').clientHeight/py))}
+ const h=Math.max($('desk').clientHeight,rows*py);seed=46;
+ const cells=[];for(let i=0;i<cols*rows;i++)cells.push(i);for(let i=cells.length-1;i>0;i--){const j=ri(0,i);[cells[i],cells[j]]=[cells[j],cells[i]]}
+ icons.forEach((d,i)=>{const c=cells[i];d.style.left=Math.max(0,Math.min(w-80,(c%cols)*px+ri(-14,14)))+'px';d.style.top=Math.max(0,Math.min(h-80,Math.floor(c/cols)*py+ri(-16,16)))+'px'})}
+layout();addEventListener('resize',layout);
+// Window can be dragged or closed so the desktop underneath is reachable. On phones it fills the screen instead.
+let drag=null;$('bar').onpointerdown=e=>{if(phone()||e.target.closest('button,input'))return;const r=$('win').getBoundingClientRect(),o=$('desk').getBoundingClientRect();drag={x:e.clientX-r.left+o.left,y:e.clientY-r.top+o.top};$('bar').setPointerCapture(e.pointerId)};
+$('bar').onpointermove=e=>{if(!drag)return;const o=$('desk').getBoundingClientRect();$('win').style.left=Math.max(-300,Math.min(o.width-80,e.clientX-drag.x))+'px';$('win').style.top=Math.max(0,Math.min(o.height-40,e.clientY-drag.y))+'px'};
+$('bar').onpointerup=$('bar').onpointercancel=()=>{drag=null};
+$('close').onclick=$('deskbtn').onclick=()=>setWin(false);$('deskback').onclick=()=>{setWin(true);layout()};
+$('back').onclick=()=>go(stack.slice(0,-1));$('q').oninput=render;$('dclose').onclick=()=>$('dobon').classList.remove('on');
+// File menu: "export list" shows the absolute URL of the static list page.
+const menu=$('menu'),fm=$('filemenu');
+fm.onclick=e=>{e.stopPropagation();const r=fm.getBoundingClientRect();menu.style.left=r.left+'px';menu.style.top=r.bottom+'px';fm.classList.toggle('on',menu.classList.toggle('on'))};
+document.addEventListener('click',()=>{menu.classList.remove('on');fm.classList.remove('on');closeCtx()});
+$('export').onclick=()=>{const u=new URL('list.html',location.href).href;$('expurl').value=u;$('explink').href=u;$('cstat').textContent='';$('exp').classList.add('on')};
+$('expclose').onclick=()=>$('exp').classList.remove('on');
+$('copy').onclick=()=>{const i=$('expurl'),u=i.value,fallback=()=>{i.focus();i.select();i.setSelectionRange(0,u.length);let ok=false;try{ok=document.execCommand('copy')}catch(e){}
+  $('cstat').textContent=ok?'コピーしました':'選択しました。コピーしてください'};
+ if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(u).then(()=>{$('cstat').textContent='コピーしました'},fallback);else fallback()};
+
+// --- Figure 3 tool: the senior's plotting tool, right-click/long-press on a
+// CSV (or the button in the preview pane). Mirrors the SAME algorithm as
+// scripts/make_assets.py (fig3_table/fingerprint_of) and 論文用/make_fig3.py.
+// No network beyond this site's own files, no localStorage, no external libs.
+let ctxNode=null,swallowClick=false;
+function openCtx(x,y,n,offsetY=0){ctxNode=n;const m=$('csvctx');m.style.left=Math.min(x,innerWidth-230)+'px';m.style.top=Math.min(y+offsetY,innerHeight-50)+'px';m.classList.add('on')}
+function closeCtx(){$('csvctx').classList.remove('on')}
+// A long-press's finger-lift can fire a trailing click on some browsers;
+// swallow exactly that one click (capture phase, before tr/d's own onclick)
+// instead of guessing at a timeout. On Android, a long press instead fires
+// a native contextmenu with no click following at all, which would leave
+// swallowClick stuck true and eat the next, unrelated click; resetting it
+// on every new pointerdown fixes that, since the one genuine trailing click
+// (when a browser does send it) has no new pointerdown before it arrives.
+document.addEventListener('pointerdown',()=>{swallowClick=false},true);
+document.addEventListener('click',e=>{if(swallowClick){swallowClick=false;e.stopPropagation()}},true);
+addEventListener('scroll',()=>closeCtx(),true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCtx()});
+function bindLongPress(elm,n){let t=null,sx=0,sy=0;
+ const cancel=()=>{if(t){clearTimeout(t);t=null}};
+ elm.addEventListener('pointerdown',e=>{if(e.pointerType!=='touch'||!e.isPrimary)return;cancel();const x=e.clientX,y=e.clientY;sx=x;sy=y;
+  t=setTimeout(()=>{t=null;swallowClick=true;openCtx(x,y,n,14)},500)});
+ elm.addEventListener('pointerup',cancel);
+ elm.addEventListener('pointermove',e=>{if(Math.hypot(e.clientX-sx,e.clientY-sy)>10)cancel()});
+ elm.addEventListener('pointercancel',cancel)}
+$('csvctxrun').onclick=e=>{e.stopPropagation();$('csvctx').classList.remove('on');if(ctxNode)runFig3(ctxNode)};
+$('fig3close').onclick=()=>$('fig3').classList.remove('on');
+$('fig3').onclick=e=>{if(e.target===e.currentTarget)$('fig3').classList.remove('on')};
+function fig3SetBody(...kids){$('fig3body').replaceChildren(...kids)}
+
+// Pure-JS SHA-256 (no deps), used only when crypto.subtle is unavailable
+// (a non-secure context, e.g. plain http://). Verified against Node's
+// crypto and known test vectors while building this tool.
+function sha256Fallback(bytes){
+ const K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+  0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+  0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+  0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+  0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+  0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+  0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+  0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+ let H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+ const l=bytes.length,total=Math.ceil((l+9)/64)*64,buf=new Uint8Array(total);
+ buf.set(bytes);buf[l]=0x80;
+ const dv=new DataView(buf.buffer);
+ dv.setUint32(total-4,(l*8)>>>0,false);
+ dv.setUint32(total-8,Math.floor(l/0x20000000),false);
+ const w=new Uint32Array(64),rotr=(x,n)=>(x>>>n)|(x<<(32-n));
+ for(let off=0;off<total;off+=64){
+  for(let i=0;i<16;i++)w[i]=dv.getUint32(off+i*4,false);
+  for(let i=16;i<64;i++){const s0=rotr(w[i-15],7)^rotr(w[i-15],18)^(w[i-15]>>>3),s1=rotr(w[i-2],17)^rotr(w[i-2],19)^(w[i-2]>>>10);
+   w[i]=(w[i-16]+s0+w[i-7]+s1)|0}
+  let[a,b,c,d,e,f,g,h]=H;
+  for(let i=0;i<64;i++){const S1=rotr(e,6)^rotr(e,11)^rotr(e,25),ch=(e&f)^(~e&g),temp1=(h+S1+ch+K[i]+w[i])|0;
+   const S0=rotr(a,2)^rotr(a,13)^rotr(a,22),maj=(a&b)^(a&c)^(b&c),temp2=(S0+maj)|0;
+   h=g;g=f;f=e;e=(d+temp1)|0;d=c;c=b;b=a;a=(temp1+temp2)|0}
+  H[0]=(H[0]+a)|0;H[1]=(H[1]+b)|0;H[2]=(H[2]+c)|0;H[3]=(H[3]+d)|0;H[4]=(H[4]+e)|0;H[5]=(H[5]+f)|0;H[6]=(H[6]+g)|0;H[7]=(H[7]+h)|0}
+ return H.map(x=>(x>>>0).toString(16).padStart(8,'0')).join('')}
+async function sha256Hex(bytes){
+ if(window.crypto&&crypto.subtle&&window.isSecureContext){const buf=await crypto.subtle.digest('SHA-256',bytes);
+  return[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('')}
+ return sha256Fallback(bytes)}
+async function fingerprintOf(byteArrays){
+ const hashes=[];for(const b of byteArrays)hashes.push(await sha256Hex(b));
+ hashes.sort();
+ return(await sha256Hex(new TextEncoder().encode(hashes.join('')))).slice(0,8)}
+
+// Shared algorithm (see scripts/make_assets.py's fig3_table): per CSV,
+// DMSO = mean(CH1-4), K10 = mean(CH5-8) per time point, each series
+// normalised by its own first value; mean and sample SD (n-1) across the
+// 3 files, per time point and group. Used only to draw a plot.
+function parseInstrumentRows(text){const rows=[];
+ for(const line of text.split(/\r?\n/)){const cells=line.split(',');if(cells.length!==10)continue;
+  if(cells.some(c=>c.trim()===''))continue;
+  const nums=cells.map(Number);if(nums.some(Number.isNaN))continue;rows.push(nums)}
+ return rows}
+function fig3Table(rowsList){
+ const n=Math.min(...rowsList.map(r=>r.length));
+ const dmsoSeries=[],k10Series=[];let tRef=null;
+ for(const rows of rowsList){const t=rows.slice(0,n).map(r=>r[0]);if(!tRef)tRef=t;
+  const dmso=rows.slice(0,n).map(r=>(r[2]+r[3]+r[4]+r[5])/4),k10=rows.slice(0,n).map(r=>(r[6]+r[7]+r[8]+r[9])/4);
+  dmsoSeries.push(dmso.map(v=>v/dmso[0]));k10Series.push(k10.map(v=>v/k10[0]))}
+ const mean=(arr,i)=>arr.reduce((s,ser)=>s+ser[i],0)/arr.length;
+ const sd=(arr,i,m)=>Math.sqrt(arr.reduce((s,ser)=>s+(ser[i]-m)**2,0)/(arr.length-1));
+ const dmso_mean=[],dmso_sd=[],k10_mean=[],k10_sd=[];
+ for(let i=0;i<n;i++){const dm=mean(dmsoSeries,i),km=mean(k10Series,i);
+  dmso_mean.push(dm);dmso_sd.push(sd(dmsoSeries,i,dm));k10_mean.push(km);k10_sd.push(sd(k10Series,i,km))}
+ return{t:tRef,dmso_mean,dmso_sd,k10_mean,k10_sd}}
+
+function drawFig3Canvas(canvas,table,fp){
+ const ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height;
+ ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);
+ const padL=48,padR=12,padT=26,padB=34,footH=26,plotW=w-padL-padR,plotH=h-padT-padB-footH;
+ const t=table.t,tMax=96,x=tt=>padL+plotW*tt/tMax;
+ const vals=[...table.dmso_mean,...table.k10_mean].concat(table.dmso_mean.map((v,i)=>v+table.dmso_sd[i]),table.k10_mean.map((v,i)=>v+table.k10_sd[i]));
+ const yMin=Math.min(0,...vals),yMax=Math.max(1,...vals),y=v=>padT+plotH*(1-(v-yMin)/(yMax-yMin));
+ ctx.strokeStyle='#333';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(padL,padT);ctx.lineTo(padL,padT+plotH);ctx.lineTo(padL+plotW,padT+plotH);ctx.stroke();
+ ctx.fillStyle='#333';ctx.font='10px sans-serif';ctx.textAlign='center';
+ for(const hh of[0,24,48,72,96])ctx.fillText(String(hh),x(hh),padT+plotH+14);
+ ctx.fillText('時間 (h)',padL+plotW/2,h-footH-4);
+ function band(mean,sd,color,alpha){ctx.fillStyle=color;ctx.globalAlpha=alpha;ctx.beginPath();
+  for(let i=0;i<t.length;i++){const px=x(t[i]),py=y(mean[i]+sd[i]);i?ctx.lineTo(px,py):ctx.moveTo(px,py)}
+  for(let i=t.length-1;i>=0;i--)ctx.lineTo(x(t[i]),y(mean[i]-sd[i]));
+  ctx.closePath();ctx.fill();ctx.globalAlpha=1}
+ function line(mean,color){ctx.strokeStyle=color;ctx.lineWidth=1.3;ctx.beginPath();
+  for(let i=0;i<t.length;i++){const px=x(t[i]),py=y(mean[i]);i?ctx.lineTo(px,py):ctx.moveTo(px,py)}
+  ctx.stroke()}
+ band(table.dmso_mean,table.dmso_sd,'#000',0.15);band(table.k10_mean,table.k10_sd,'#888',0.25);
+ line(table.dmso_mean,'#000');line(table.k10_mean,'#888');
+ ctx.textAlign='left';ctx.font='10px sans-serif';ctx.fillStyle='#333';
+ ctx.fillText('黒: DMSO 灰: 化合物K 10 µM',padL+4,padT+10);
+ ctx.textAlign='center';ctx.font='12px sans-serif';ctx.fillText('図3 n = 3',padL+plotW/2,16);
+ ctx.fillStyle='#ebebeb';ctx.fillRect(0,h-footH,w,footH);
+ ctx.strokeStyle='#aaa';ctx.beginPath();ctx.moveTo(0,h-footH);ctx.lineTo(w,h-footH);ctx.stroke();
+ ctx.fillStyle='#282828';ctx.font='12px sans-serif';ctx.textAlign='left';ctx.fillText('入力の指紋: '+fp,8,h-footH/2+4)}
+
+let fig3Tok=0;
+async function runFig3(n){
+ const tok=++fig3Tok;
+ $('fig3title').textContent='先輩の作図ツール';
+ fig3SetBody(el('p','fig3note','計算中…'));
+ $('fig3').classList.add('on');
+ try{
+  const rep1=nodes.get('デスクトップ/先輩のフォルダ/論文用/図3_input/DATA0108.CSV');
+  const rep2=nodes.get('デスクトップ/先輩のフォルダ/論文用/図3_input/DATA0110.CSV');
+  const rough=nodes.get('デスクトップ/図3_荒いと言われたもの.png');
+  if(!rep1||!rep2)throw new Error('先輩: 論文用/図3_input が見当たらない…先輩のフォルダ、動かしてない？');
+  const bufs=await Promise.all([rep1,rep2,n].map(x=>fetch(x.u).then(r=>{if(!r.ok)throw new Error('取得できませんでした');return r.arrayBuffer()})));
+  if(tok!==fig3Tok)return;
+  const texts=bufs.map(b=>new TextDecoder('ascii').decode(b));
+  for(const t of texts)if(!t.startsWith('Luminescence Monitor YH-8,'))
+   throw new Error('先輩: それ、装置のCSVじゃない気がする…発光測定のフォルダから選んでみて。');
+  const rowsList=texts.map(parseInstrumentRows);
+  if(rowsList.some(r=>r.length<2))throw new Error('先輩: データ行がうまく読めなかった。CSVが壊れてない？');
+  const table=fig3Table(rowsList),fp=await fingerprintOf(bufs.map(b=>new Uint8Array(b)));
+  if(tok!==fig3Tok)return;
+  const canvas=el('canvas');canvas.width=420;canvas.height=300;
+  drawFig3Canvas(canvas,table,fp);
+  const img=el('img');img.alt='図3（荒い）';if(rough)img.src=rough.u;
+  const cols=el('div','fig3cols'),c1=el('div'),c2=el('div');
+  c1.append(el('h4',null,'いま計算した図（2回分＋選んだCSV）'),canvas);
+  c2.append(el('h4',null,'元の図3（荒い。指紋なし）'),img);
+  cols.append(c1,c2);
+  const note=el('p','fig3note',`入力ファイルの指紋: ${fp}\n論文用/図3_スクショ.png の窓の下の数字と見比べてください。同じなら、選んだCSVが正解。`);
+  note.style.whiteSpace='pre-line';
+  fig3SetBody(cols,note);
+ }catch(err){if(tok===fig3Tok)fig3SetBody(el('p','fig3note',(err&&err.message)||String(err)))}}
+
+blank();render();
+</script></body></html>
